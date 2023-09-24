@@ -31,7 +31,7 @@ public class RandomGenerator {
 
     public static String generateString(int length) {
 
-        String charSequence = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        String charSequence = "abcdefghijklmnopqrstuvwxyz0123456789";
         char[] generatedString = new char[length];
 
         int index = 0;
