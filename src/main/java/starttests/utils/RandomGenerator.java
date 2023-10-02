@@ -23,7 +23,6 @@ public class RandomGenerator {
         } catch (IOException e) {
 
             System.out.println("Wrong data");
-            ;
         }
 
         return email;

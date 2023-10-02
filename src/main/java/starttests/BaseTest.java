@@ -15,10 +15,6 @@ import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
 
-    // @BeforeSuite - init and teardown
-    // locators
-    // methods common (example fill form)
-
     WebDriver driver;
 
     @BeforeSuite
