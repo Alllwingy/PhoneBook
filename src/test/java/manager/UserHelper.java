@@ -15,8 +15,8 @@ public class UserHelper extends HelperBase {
     By emailInputFieldWith = By.xpath("//input[@name='email']");
     By passwordInputFieldWith = By.xpath("//input[@name='password']");
     By loginButtonOnLoginForm = By.xpath("//button[@name='login']");
-    public By contactsButtonOnNavigationBar = By.xpath("//a[@href='/contacts']");
-    public String contactsButtonTextToValidate = "CONTACTS";
+    By contactsButtonOnNavigationBar = By.xpath("//a[@href='/contacts']");
+    String contactsButtonTextToValidate = "CONTACTS";
     public String email = "4hxbr1co25f2@gmail.com";
     public String password = "Task$12345";
 
@@ -36,8 +36,8 @@ public class UserHelper extends HelperBase {
         clickOn(loginButtonOnLoginForm);
     }
 
-    public boolean validatePresenceOfContactsButtonOnNavigationBar(By locator, String expectedResult) {
+    public boolean validationOfPresenceOfContactsButtonOnNavigationBar() {
 
-        return isResultsEquals(locator, expectedResult);
+        return isResultsEquals(contactsButtonOnNavigationBar, contactsButtonTextToValidate);
     }
 }

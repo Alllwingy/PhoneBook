@@ -6,7 +6,7 @@ import org.testng.annotations.BeforeSuite;
 
 public class TestBase {
 
-    AppleManager apple = new AppleManager();
+    static AppleManager apple = new AppleManager();
 
     @BeforeSuite
     public void before() {

@@ -10,26 +10,24 @@ public class LoginTest extends TestBase {
     @Test
     public void positiveLoginTestWithUserDTO() {
 
-        UserDTO user = new UserDTO(apple.getUserHelper().email, apple.getUserHelper().password);
+        UserDTO user = new UserDTO(
+                apple.getUserHelperToApply().email,
+                apple.getUserHelperToApply().password);
 
-        apple.getUserHelper().login(user);
-        Assert.assertTrue(apple.getUserHelper()
-                .validatePresenceOfContactsButtonOnNavigationBar(
-                        apple.getUserHelper().contactsButtonOnNavigationBar,
-                        apple.getUserHelper().contactsButtonTextToValidate));
+        apple.getUserHelperToApply().login(user);
+        Assert.assertTrue(apple.getUserHelperToApply()
+                .validationOfPresenceOfContactsButtonOnNavigationBar());
     }
 
     @Test
     public void positiveLoginTestWithUserDTOWith() {
 
         UserDTOWith user = new UserDTOWith()
-                .setEmail(apple.getUserHelper().email)
-                .setPassword(apple.getUserHelper().password);
+                .withEmail(apple.getUserHelperToApply().email)
+                .withPassword(apple.getUserHelperToApply().password);
 
-        apple.getUserHelper().login(user);
-        Assert.assertTrue(apple.getUserHelper()
-                .validatePresenceOfContactsButtonOnNavigationBar(
-                        apple.getUserHelper().contactsButtonOnNavigationBar,
-                        apple.getUserHelper().contactsButtonTextToValidate));
+        apple.getUserHelperToApply().login(user);
+        Assert.assertTrue(apple.getUserHelperToApply()
+                .validationOfPresenceOfContactsButtonOnNavigationBar());
     }
 }

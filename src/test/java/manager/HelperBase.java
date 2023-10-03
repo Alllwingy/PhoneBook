@@ -48,10 +48,9 @@ public class HelperBase {
         String actualResult = getTextBy(locator);
         expectedResult = expectedResult.toUpperCase();
 
-        if (expectedResult.equals(actualResult)) {
-
+        if (expectedResult.equals(actualResult))
             return true;
-        } else {
+        else {
 
             System.out.println("expected result: " + expectedResult + "\nactual result: " + actualResult);
             return false;

@@ -15,14 +15,14 @@ public class UserDTOWith {
         return password;
     }
 
-    public UserDTOWith setEmail(String email) {
+    public UserDTOWith withEmail(String email) {
 
         if (email != null && !email.isEmpty())
             this.email = email;
         return this;
     }
 
-    public UserDTOWith setPassword(String password) {
+    public UserDTOWith withPassword(String password) {
 
         if (password != null && !password.isEmpty())
             this.password = password;

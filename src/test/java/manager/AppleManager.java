@@ -20,7 +20,7 @@ public class AppleManager {
         userHelper = new UserHelper(driver);
     }
 
-    public UserHelper getUserHelper() {
+    public UserHelper getUserHelperToApply() {
 
         return userHelper;
     }
