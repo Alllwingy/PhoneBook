@@ -15,12 +15,12 @@ public class HelperBase {
         this.driver = driver;
     }
 
-    public WebElement findElementBy(By locator) {
+    private WebElement findElementBy(By locator) {
 
         return driver.findElement(locator);
     }
 
-    public List<WebElement> findElementsBy(By locator) {
+    private List<WebElement> findElementsBy(By locator) {
 
         return driver.findElements(locator);
     }
