@@ -47,7 +47,7 @@ public class RandomGenerator {
         return new String(generatedString);
     }
 
-    public String readlistOfEmailsFromFile() throws IOException {
+    public String readRandomEmailFromFile() throws IOException {
 
         List<String> listOfEmails = new ArrayList<>();
 
@@ -55,10 +55,9 @@ public class RandomGenerator {
 
             String line = "";
 
-            while ((line = in.readLine()) != null) {
-
+            while ((line = in.readLine()) != null)
                 listOfEmails.add(line);
-            }
+
         } catch (IOException e) {
 
             System.out.println("Wrong data");

@@ -20,6 +20,11 @@ public class AppleManager {
         userHelper = new UserHelper(driver);
     }
 
+    public void navigateToMainPage() {
+
+        driver.navigate().to("https://telranedu.web.app/home");
+    }
+
     public UserHelper getUserHelperToApply() {
 
         return userHelper;

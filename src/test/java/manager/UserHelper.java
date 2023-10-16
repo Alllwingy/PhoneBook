@@ -19,44 +19,57 @@ public class UserHelper extends HelperBase {
     By registrationButtonOnLoginForm = By.xpath("//button[@name='registration']");
 //    String registrationButtonOnLoginForm = "document.querySelector('[name=\"registration\"]').click();\n";
     By contactsButtonOnNavigationBar = By.xpath("//a[@href='/contacts']");
+    By buttonLogout = By.tagName("button");
     String contactsButtonTextToValidate = "CONTACTS";
-    public String email = "4hxbr1co25f2@gmail.com";
+    public String alertTextLogin_WrongEmailToValidate = "Wrong email or password";
+    public String alertTextRegistration_WrongEmailToValidate = "Wrong email or password format\n" +
+            "            Email must contains one @ and minimum 2 symbols after last dot\n" +
+            "            Password must contain at least one uppercase letter!\n" +
+            "            Password must contain at least one lowercase letter!\n" +
+            "            Password must contain at least one digit!\n" +
+            "            Password must contain at least one special symbol from [‘$’,’~’,’-‘,’_’]!";
     public String password = "Task$12345";
 
     public void login(UserDTO user) {
 
-        clickOn(loginButtonOnNavigationBar);
+        click_Mouse(loginButtonOnNavigationBar);
         fill(emailInputFieldWith, user.email());
         fill(passwordInputFieldWith, user.password());
-        clickOn(loginButtonOnLoginForm);
+        click_Action(loginButtonOnLoginForm,2,2);
     }
 
     public void login(UserDTOWith user) {
 
-        clickOn(loginButtonOnNavigationBar);
+        click_Mouse(loginButtonOnNavigationBar);
         fill(emailInputFieldWith, user.email());
         fill(passwordInputFieldWith, user.password());
-        clickOn(loginButtonOnLoginForm);
+        click_Action(loginButtonOnLoginForm);
     }
 
     public void login(UserDTOLombok user) {
 
-        clickOn(loginButtonOnNavigationBar);
+        click_Mouse(loginButtonOnNavigationBar);
         fill(emailInputFieldWith, user.getEmail());
         fill(passwordInputFieldWith, user.getPassword());
-        clickOn(loginButtonOnLoginForm);
+        click_Action(loginButtonOnLoginForm);
     }
 
-    public boolean validationOfPresenceOfContactsButtonOnNavigationBar() {
+    public void registration(UserDTOLombok user) {
+
+        click_Mouse(loginButtonOnNavigationBar);
+        fill(emailInputFieldWith, user.getEmail());
+        fill(passwordInputFieldWith, user.getPassword());
+        click_Mouse(registrationButtonOnLoginForm);
+    }
+
+    public boolean validationOfContactsButtonOnNavigationBar() {
 
         return isResultsEquals(contactsButtonOnNavigationBar, contactsButtonTextToValidate);
     }
 
-    public void fillRegistrationForm(UserDTOLombok user) {
+    public void logoutIfLogin() {
 
-        clickOn(loginButtonOnNavigationBar);
-        fill(emailInputFieldWith, user.getEmail());
-        fill(passwordInputFieldWith, user.getPassword());
-        clickOn(registrationButtonOnLoginForm);
+        if (isElementPresent(buttonLogout))
+            click_Mouse(buttonLogout);
     }
 }
