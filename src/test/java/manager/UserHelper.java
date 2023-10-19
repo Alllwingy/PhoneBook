@@ -6,7 +6,7 @@ import dto.UserDTOWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class UserHelper extends HelperBase {
+public class UserHelper extends BaseHelper {
 
     public UserHelper(WebDriver driver) {
         super(driver);
@@ -35,7 +35,7 @@ public class UserHelper extends HelperBase {
         click_Mouse(loginButtonOnNavigationBar);
         fill(emailInputFieldWith, user.email());
         fill(passwordInputFieldWith, user.password());
-        click_Action(loginButtonOnLoginForm,2,2);
+        click_Mouse(loginButtonOnLoginForm);
     }
 
     public void login(UserDTOWith user) {

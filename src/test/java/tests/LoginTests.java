@@ -10,19 +10,19 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 
-public class LoginTests extends TestBase {
+public class LoginTests extends BaseTest {
+
+    int seconds = 10;
 
     @BeforeMethod
     public void beforeMethod() {
 
         apple.navigateToMainPage();
-        apple.getUserHelperToApply().pause(1);
     }
 
     @AfterMethod
     public void afterMethod() {
 
-        apple.getUserHelperToApply().pause(3);
         apple.getUserHelperToApply().logoutIfLogin();
     }
 
@@ -34,7 +34,6 @@ public class LoginTests extends TestBase {
                 apple.getUserHelperToApply().password);
 
         apple.getUserHelperToApply().login(userDTO);
-        apple.getUserHelperToApply().pause(10);
         Assert.assertTrue(apple.getUserHelperToApply()
                 .validationOfContactsButtonOnNavigationBar());
     }
@@ -47,7 +46,6 @@ public class LoginTests extends TestBase {
                 .withPassword(apple.getUserHelperToApply().password);
 
         apple.getUserHelperToApply().login(userDTOWith);
-        apple.getUserHelperToApply().pause(3);
         Assert.assertTrue(apple.getUserHelperToApply()
                 .validationOfContactsButtonOnNavigationBar());
     }
@@ -61,13 +59,12 @@ public class LoginTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().login(userDTOLombok);
-        apple.getUserHelperToApply().pause(3);
         Assert.assertTrue(apple.getUserHelperToApply()
                 .validationOfContactsButtonOnNavigationBar());
     }
 
     @Test
-    public void negative_UserDTOLombok_WrongEmail() throws IOException {
+    public void negative_UserDTOLombok_WrongEmail() {
 
         UserDTOLombok userDTOLombok = UserDTOLombok.builder()
                 .email("winnergmail.com")
@@ -75,13 +72,12 @@ public class LoginTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().login(userDTOLombok);
-        apple.getUserHelperToApply().pause(3);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(10),
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
                 apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
     }
 
     @Test
-    public void negative_UserDTOLombok_EmptyEmail() throws IOException {
+    public void negative_UserDTOLombok_EmptyEmail() {
 
         UserDTOLombok userDTOLombok = UserDTOLombok.builder()
                 .email("")
@@ -89,8 +85,7 @@ public class LoginTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().login(userDTOLombok);
-        apple.getUserHelperToApply().pause(3);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(10),
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
                 apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
     }
 
@@ -103,8 +98,20 @@ public class LoginTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().login(userDTOLombok);
-        apple.getUserHelperToApply().pause(3);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(10),
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
+                apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
+    }
+
+    @Test
+    public void negative_UserDTOLombok_EmptyPassword() throws IOException {
+
+        UserDTOLombok userDTOLombok = UserDTOLombok.builder()
+                .email(random.readRandomEmailFromFile())
+                .password("")
+                .build();
+
+        apple.getUserHelperToApply().login(userDTOLombok);
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
                 apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
     }
 }

@@ -7,12 +7,13 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
 
-public class HelperBase {
+public class BaseHelper {
 
     WebDriver driver;
-    WebDriverWait wait;
+    public WebDriverWait wait;
 
-    public HelperBase(WebDriver driver) {
+
+    public BaseHelper(WebDriver driver) {
 
         this.driver = driver;
     }
@@ -25,6 +26,11 @@ public class HelperBase {
     private List<WebElement> findElementsBy(By locator) {
 
         return driver.findElements(locator);
+    }
+
+    public WebElement getElement(By locator) {
+
+        return findElementBy(locator);
     }
 
     public void click_Mouse(By locatorAnd) {

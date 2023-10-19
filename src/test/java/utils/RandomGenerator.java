@@ -8,7 +8,7 @@ import java.util.Random;
 public class RandomGenerator {
 
     Random random = new Random();
-    String fileName = "listOfEmails.txt";
+    String filePath = "listOfEmails.txt";
 
     public String generateEmail(int length) {
 
@@ -17,7 +17,7 @@ public class RandomGenerator {
 
         String email = (generateString(length) + "@" + domain);
 
-        try (BufferedWriter out = new BufferedWriter(new FileWriter(fileName, true))) {
+        try (BufferedWriter out = new BufferedWriter(new FileWriter(filePath, true))) {
 
             out.write(email);
             out.newLine();
@@ -51,7 +51,7 @@ public class RandomGenerator {
 
         List<String> listOfEmails = new ArrayList<>();
 
-        try (BufferedReader in = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader in = new BufferedReader(new FileReader(filePath))) {
 
             String line = "";
 

@@ -6,7 +6,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class RegistrationTests extends TestBase {
+public class RegistrationTests extends BaseTest {
+
+    int seconds = 10;
 
     @BeforeMethod
     public void beforeMethod() {
@@ -32,6 +34,18 @@ public class RegistrationTests extends TestBase {
     }
 
     @Test
+    public void positive_UserDTOLombok_WFaker() {
+
+        UserDTOLombok user = UserDTOLombok.builder()
+                .email(faker.generateEmail_Faker())
+                .password(apple.getUserHelperToApply().password)
+                .build();
+
+        apple.getUserHelperToApply().registration(user);
+        Assert.assertTrue(apple.getUserHelperToApply().validationOfContactsButtonOnNavigationBar());
+    }
+
+    @Test
     public void negative_UserDTOLombok_WrongEmail() {
 
         UserDTOLombok user = UserDTOLombok.builder()
@@ -40,7 +54,7 @@ public class RegistrationTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(10),
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
                 apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
     }
 
@@ -53,7 +67,7 @@ public class RegistrationTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(10),
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
                 apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
     }
 
@@ -66,7 +80,20 @@ public class RegistrationTests extends TestBase {
                 .build();
 
         apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(10),
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
+                apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
+    }
+
+    @Test
+    public void negative_UserDTOLombok_EmptyPassword() {
+
+        UserDTOLombok user = UserDTOLombok.builder()
+                .email(random.generateEmail(7))
+                .password("")
+                .build();
+
+        apple.getUserHelperToApply().registration(user);
+        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
                 apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
     }
 }
