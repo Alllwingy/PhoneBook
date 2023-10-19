@@ -1,0 +1,14 @@
+19:58:13.917 [Test worker] INFO  tests.BaseTest -- Start method: negative_UserDTOLombok_EmptyEmail
+19:58:16.118 [Test worker] INFO  tests.BaseTest -- Stop method: negative_UserDTOLombok_EmptyEmail method duration: 2202
+19:58:16.120 [Test worker] INFO  tests.BaseTest -- Start method: negative_UserDTOLombok_EmptyPassword
+19:58:17.749 [Test worker] INFO  tests.BaseTest -- Stop method: negative_UserDTOLombok_EmptyPassword method duration: 1629
+19:58:17.750 [Test worker] INFO  tests.BaseTest -- Start method: negative_UserDTOLombok_WrongEmail
+19:58:19.449 [Test worker] INFO  tests.BaseTest -- Stop method: negative_UserDTOLombok_WrongEmail method duration: 1699
+19:58:19.450 [Test worker] INFO  tests.BaseTest -- Start method: negative_UserDTOLombok_WrongPassword
+19:58:21.088 [Test worker] INFO  tests.BaseTest -- Stop method: negative_UserDTOLombok_WrongPassword method duration: 1638
+19:58:21.090 [Test worker] INFO  tests.BaseTest -- Start method: positive_UserDTO
+19:58:22.376 [Test worker] INFO  tests.BaseTest -- Stop method: positive_UserDTO method duration: 1286
+19:58:22.377 [Test worker] INFO  tests.BaseTest -- Start method: positive_UserDTOLombok
+19:58:23.379 [Test worker] INFO  tests.BaseTest -- Stop method: positive_UserDTOLombok method duration: 1002
+19:58:23.380 [Test worker] INFO  tests.BaseTest -- Start method: positive_UserDTOWith
+19:58:24.351 [Test worker] INFO  tests.BaseTest -- Stop method: positive_UserDTOWith method duration: 971
