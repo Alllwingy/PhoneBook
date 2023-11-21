@@ -5,8 +5,8 @@
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> <!-- out.console -->
         <!-- encoders are assigned next type by default "ch.qos.logback.classic.encoder.PatternLayoutEncoder" -->
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
-            <!-- <pattern>%date %level %logger{10} [%file:%line] %msg%n</pattern> -->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>-->
+             <pattern>%date %level %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 
@@ -19,8 +19,8 @@
         <totalSizeCap>10GB</totalSizeCap> <!-- max total size 10 GB -->
         <!-- encoders are assigned next type by default "ch.qos.logback.classic.encoder.PatternLayoutEncoder" -->
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>
-            <!-- <pattern>%date %level %logger{10} [%file:%line] %msg%n</pattern> -->
+<!--            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} -%kvp- %msg%n</pattern>-->
+             <pattern>%date %level %logger{10} [%file:%line] %msg%n</pattern>
         </encoder>
     </appender>
 

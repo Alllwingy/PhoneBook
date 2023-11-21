@@ -47,6 +47,23 @@ public class RandomGenerator {
         return new String(generatedString);
     }
 
+    public String generateStringDigits(int length) {
+
+        String charSequence = "0123456789";
+        char[] generatedString = new char[length];
+
+        int index = 0;
+        int charSequenceLength = charSequence.length();
+
+        for (int i = 0; i < length; i++) {
+
+            index = random.nextInt(charSequenceLength);
+            generatedString[i] = charSequence.charAt(index);
+        }
+
+        return new String(generatedString);
+    }
+
     public String readRandomEmailFromFile() throws IOException {
 
         List<String> listOfEmails = new ArrayList<>();

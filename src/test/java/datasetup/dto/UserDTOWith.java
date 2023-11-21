@@ -1,16 +1,16 @@
-package dto;
+package datasetup.dto;
 
 public class UserDTOWith {
 
     private String email = "No email";
     private String password = "No password";
 
-    public String email() {
+    public String getEmail() {
 
         return email;
     }
 
-    public String password() {
+    public String getPassword() {
 
         return password;
     }

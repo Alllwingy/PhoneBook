@@ -1,99 +1,110 @@
 package tests;
 
-import dto.UserDTOLombok;
+import datasetup.Data;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class RegistrationTests extends BaseTest {
+import java.lang.reflect.Method;
 
-    int seconds = 10;
+public class RegistrationTests extends BaseTests {
 
-    @BeforeMethod
+    Data.RandomUserData rud;
+    String repetedLoggerText;
+
+    @BeforeClass (alwaysRun = true)
+    public void beforeClass() {
+
+        repetedLoggerText = " fill email input field with: %s and password input field with: %s and click button Login";
+
+        if (apple.isPageUrlHome())
+            apple.getUserHelper().openLoginPage();
+    }
+
+    @BeforeMethod (alwaysRun = true)
     public void beforeMethod() {
 
-        apple.navigateToMainPage();
+        rud = new Data.RandomUserData();
     }
-    @AfterMethod
+
+    @AfterMethod (alwaysRun = true)
     public void afterMethod() {
 
-        apple.getUserHelperToApply().logoutIfLogin();
+        flagAfterMethod();
+    }
+
+    @Test  (groups = { "smoke", "all" })
+    public void positive_UserDTOLombok_WFaker(Method method) {
+
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, rud.lombok.getUsername(), rud.lombok.getPassword()));
+
+        apple.getUserHelper().registration(rud.lombok);
+
+        isFlagLogin = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfContactsButtonOnNavigationBar());
+    }
+
+    @Test  (groups = { "regression", "all" })
+    public void negative_UserDTOLombok_WrongEmail(Method method) {
+
+        rud.lombok.setUsername("abqduv.co.il");
+
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, rud.lombok.getUsername(), rud.lombok.getPassword()));
+
+        apple.getUserHelper().registration(rud.lombok);
+
+        isFlagAlert = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextRegistraton());
     }
 
     @Test
-    public void positive_UserDTOLombok() {
+    public void negative_UserDTOLombok_EmptyEmail(Method method) {
 
-        UserDTOLombok user = UserDTOLombok.builder()
-                .email(random.generateEmail(7))
-                .password(apple.getUserHelperToApply().password)
-                .build();
+        rud.lombok.setUsername("");
 
-        apple.getUserHelperToApply().registration(user);
-        Assert.assertTrue(apple.getUserHelperToApply().validationOfContactsButtonOnNavigationBar());
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, rud.lombok.getUsername(), rud.lombok.getPassword()));
+
+        apple.getUserHelper().registration(rud.lombok);
+
+        isFlagAlert = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextRegistraton());
     }
 
     @Test
-    public void positive_UserDTOLombok_WFaker() {
+    public void negative_UserDTOLombok_WrongPassword(Method method) {
 
-        UserDTOLombok user = UserDTOLombok.builder()
-                .email(faker.generateEmail_Faker())
-                .password(apple.getUserHelperToApply().password)
-                .build();
+        rud.lombok.setPassword("Test");
 
-        apple.getUserHelperToApply().registration(user);
-        Assert.assertTrue(apple.getUserHelperToApply().validationOfContactsButtonOnNavigationBar());
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, rud.lombok.getUsername(), rud.lombok.getPassword()));
+
+        apple.getUserHelper().registration(rud.lombok);
+
+        isFlagAlert = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextRegistraton());
     }
 
     @Test
-    public void negative_UserDTOLombok_WrongEmail() {
+    public void negative_UserDTOLombok_EmptyPassword(Method method) {
 
-        UserDTOLombok user = UserDTOLombok.builder()
-                .email("abqduv.co.il")
-                .password(apple.getUserHelperToApply().password)
-                .build();
+        rud.lombok.setPassword("");
 
-        apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
-    }
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, rud.lombok.getUsername(), rud.lombok.getPassword()));
 
-    @Test
-    public void negative_UserDTOLombok_EmptyEmail() {
+        apple.getUserHelper().registration(rud.lombok);
 
-        UserDTOLombok user = UserDTOLombok.builder()
-                .email("")
-                .password(apple.getUserHelperToApply().password)
-                .build();
+        isFlagAlert = true;
 
-        apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
-    }
-
-    @Test
-    public void negative_UserDTOLombok_WrongPassword() {
-
-        UserDTOLombok user = UserDTOLombok.builder()
-                .email(random.generateEmail(7))
-                .password("Test")
-                .build();
-
-        apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
-    }
-
-    @Test
-    public void negative_UserDTOLombok_EmptyPassword() {
-
-        UserDTOLombok user = UserDTOLombok.builder()
-                .email(random.generateEmail(7))
-                .password("")
-                .build();
-
-        apple.getUserHelperToApply().registration(user);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextRegistration_WrongEmailToValidate);
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextRegistraton());
     }
 }

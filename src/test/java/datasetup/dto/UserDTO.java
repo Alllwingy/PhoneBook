@@ -1,4 +1,4 @@
-package dto;
+package datasetup.dto;
 
 public class UserDTO {
 
@@ -11,7 +11,7 @@ public class UserDTO {
         setPassword(password);
     }
 
-    public String email() {
+    public String getEmail() {
 
         return email;
     }
@@ -22,7 +22,7 @@ public class UserDTO {
             this.email = email;
     }
 
-    public String password() {
+    public String getPassword() {
 
         return password;
     }

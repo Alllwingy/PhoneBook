@@ -4,6 +4,8 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -11,6 +13,7 @@ public class BaseHelper {
 
     WebDriver driver;
     public WebDriverWait wait;
+    Logger logger = LoggerFactory.getLogger(AppleManager.class);
 
 
     public BaseHelper(WebDriver driver) {
@@ -20,17 +23,13 @@ public class BaseHelper {
 
     private WebElement findElementBy(By locator) {
 
+        logger.info("findElementBy locator: " + locator);
         return driver.findElement(locator);
     }
 
     private List<WebElement> findElementsBy(By locator) {
 
         return driver.findElements(locator);
-    }
-
-    public WebElement getElement(By locator) {
-
-        return findElementBy(locator);
     }
 
     public void click_Mouse(By locatorAnd) {
@@ -53,19 +52,7 @@ public class BaseHelper {
 //        int y = rectangle.getY() + down;
 
         Actions action = new Actions(driver);
-        action.moveByOffset(x,y).click().perform();
-    }
-
-    public void pause(int seconds) {
-
-        try {
-
-            Thread.sleep(seconds * 1_000L);
-
-        } catch (InterruptedException e) {
-
-            throw new RuntimeException(e);
-        }
+        action.moveByOffset(x, y).click().perform();
     }
 
     public void fill(By locator, String text) {
@@ -86,12 +73,36 @@ public class BaseHelper {
         return !findElementsBy(locator).isEmpty();
     }
 
+    public boolean isElementByTextExistsInTheList(By locator, String phone) {
+
+        List<WebElement> list = findElementsBy(locator);
+
+        if (list.isEmpty())
+            return false;
+
+        for (WebElement l : list) {
+
+            if (l.getText().equals(phone)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public boolean isResultsEquals(By locator, String expectedResult) {
 
         String actualResult = getTextBy(locator);
+
+        return isTextContains(actualResult, expectedResult);
+    }
+
+    public boolean isTextContains(String actualResult, String expectedResult) {
+
+        actualResult = actualResult.toUpperCase();
         expectedResult = expectedResult.toUpperCase();
 
-        if (expectedResult.equals(actualResult))
+        if (actualResult.contains(expectedResult))
             return true;
         else {
 
@@ -100,43 +111,32 @@ public class BaseHelper {
         }
     }
 
-    public String alert(int seconds) {
+    public String alertGetText() {
 
-        wait = new WebDriverWait(driver, seconds);
-
+        wait = new WebDriverWait(driver, 10);
         Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-        String text = alert.getText();
-        alert.accept();
 
-        return text;
+        return alert.getText().trim().toUpperCase();
     }
 
-    public String alert(int seconds, boolean accept) {
+    public void alertAccept(boolean accept) {
 
-        wait = new WebDriverWait(driver, seconds);
-
+        wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.alertIsPresent());
+
         Alert alert = driver.switchTo().alert();
-        String text = alert.getText();
 
         if (accept)
             alert.accept();
         else
             alert.dismiss();
-
-        return text;
     }
 
-    public void alert(int seconds, String text, boolean accept) {
+    public void alertSendKeys(String text) {
 
-        wait = new WebDriverWait(driver, seconds);
-
+        wait = new WebDriverWait(driver, 10);
         Alert alert = wait.until(ExpectedConditions.alertIsPresent());
-        alert.sendKeys(text);
 
-        if (accept)
-            alert.accept();
-        else
-            alert.dismiss();
+        alert.sendKeys(text);
     }
 }

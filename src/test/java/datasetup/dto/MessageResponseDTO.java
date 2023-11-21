@@ -1,17 +1,16 @@
-package dto;
+package datasetup.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+@Builder
 @Getter
 @Setter
 @ToString
-@Builder
 
-public class UserDTOLombok {
+public class MessageResponseDTO {
 
-    String email;
-    String password;
+    String message;
 }

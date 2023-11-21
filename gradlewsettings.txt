@@ -1,0 +1,13 @@
+./gradlew test
+./gradlew clean test
+./gradlew clean phonebook
+./gradlew clean -Pbrowser=firefox phonebook
+./gradlew clean -Pbrowser=chrome phonebook
+./gradlew clean -Pbrowser=firefox -Dsuite=login phonebook
+./gradlew clean -Pbrowser=firefox -Dgroups=smoke phonebook
+./gradlew clean -Dgroups=smoke phonebook
+./gradlew clean -Dgroups=regression phonebook
+./gradlew clean -Dgroups=all phonebook
+./gradlew clean -Dgroups=all phonebook
+./gradlew clean -Dgroups=regression -Ptarget=fake phonebook
+./gradlew clean -Dgroups=regression -Ptarget=config phonebook

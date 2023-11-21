@@ -1,117 +1,136 @@
 package tests;
 
-import dto.UserDTO;
-import dto.UserDTOLombok;
-import dto.UserDTOWith;
+import datasetup.Data;
+import datasetup.dto.UserDTOLombok;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 
-public class LoginTests extends BaseTest {
+public class LoginTests extends BaseTests {
 
-    int seconds = 10;
+    Data.ConfigurationPropertiesData cpd;
+    String repetedLoggerText;
+
+    @BeforeClass (alwaysRun = true)
+    public void beforeClass() {
+
+        repetedLoggerText = " fill email input field with: %s and password input field with: %s and click button Login";
+
+        if (apple.isPageUrlHome())
+            apple.getUserHelper().openLoginPage();
+    }
 
     @BeforeMethod
     public void beforeMethod() {
 
-        apple.navigateToMainPage();
+        cpd = new Data.ConfigurationPropertiesData();
     }
 
-    @AfterMethod
+    @AfterMethod (alwaysRun = true)
     public void afterMethod() {
 
-        apple.getUserHelperToApply().logoutIfLogin();
+        flagAfterMethod();
+    }
+
+    @Test (groups = { "smoke", "all" }, dataProvider = "dataU", dataProviderClass = Data.UserDataCSV.class)
+    public void positive_UserDTO(UserDTOLombok userDP, Method method) {
+
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, userDP.getUsername(), userDP.getPassword()));
+
+        apple.getUserHelper().login(userDP);
+
+        isFlagLogin = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfContactsButtonOnNavigationBar());
+    }
+
+    @Test (groups = { "smoke", "all" })
+    public void positive_UserDTOWith(Method method) {
+
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, cpd.with.getEmail(), cpd.with.getPassword()));
+
+        apple.getUserHelper().login(cpd.with);
+
+        isFlagLogin = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfContactsButtonOnNavigationBar());
     }
 
     @Test
-    public void positive_UserDTO() throws IOException {
+    public void positive_UserDTOLombok(Method method) {
 
-        UserDTO userDTO = new UserDTO(
-                random.readRandomEmailFromFile(),
-                apple.getUserHelperToApply().password);
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, cpd.lombok.getUsername(), cpd.lombok.getPassword()));
 
-        apple.getUserHelperToApply().login(userDTO);
-        Assert.assertTrue(apple.getUserHelperToApply()
-                .validationOfContactsButtonOnNavigationBar());
+        apple.getUserHelper().login(cpd.lombok);
+
+        isFlagLogin = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfContactsButtonOnNavigationBar());
+    }
+
+    @Test  (groups = { "smoke", "regression", "all" })
+    public void negative_UserDTOLombok_WrongEmail(Method method) {
+
+        cpd.lombok.setUsername("winnergmail.com");
+
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, cpd.lombok.getUsername(), cpd.lombok.getPassword()));
+
+        apple.getUserHelper().login(cpd.lombok);
+
+        isFlagAlert = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextLogin());
+    }
+
+    @Test (dataProvider = "dataU", dataProviderClass = Data.UserDataCSV.class)
+    public void negative_UserDTOLombok_EmptyEmail(UserDTOLombok userDP, Method method) {
+
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, userDP.getUsername(), userDP.getPassword()));
+
+        apple.getUserHelper().login(userDP);
+
+        isFlagAlert = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextLogin());
     }
 
     @Test
-    public void positive_UserDTOWith() throws IOException {
+    public void negative_UserDTOLombok_WrongPassword(Method method) throws IOException {
 
-        UserDTOWith userDTOWith = new UserDTOWith()
-                .withEmail(random.readRandomEmailFromFile())
-                .withPassword(apple.getUserHelperToApply().password);
+        cpd.lombok.setPassword("Test");
 
-        apple.getUserHelperToApply().login(userDTOWith);
-        Assert.assertTrue(apple.getUserHelperToApply()
-                .validationOfContactsButtonOnNavigationBar());
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, cpd.lombok.getUsername(), cpd.lombok.getPassword()));
+
+        apple.getUserHelper().login(cpd.lombok);
+
+        isFlagAlert = true;
+
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextLogin());
     }
 
     @Test
-    public void positive_UserDTOLombok() throws IOException {
+    public void negative_UserDTOLombok_EmptyPassword(Method method) throws IOException {
 
-        UserDTOLombok userDTOLombok = UserDTOLombok.builder()
-                .email(random.readRandomEmailFromFile())
-                .password(apple.getUserHelperToApply().password)
-                .build();
+        cpd.lombok.setPassword("");
 
-        apple.getUserHelperToApply().login(userDTOLombok);
-        Assert.assertTrue(apple.getUserHelperToApply()
-                .validationOfContactsButtonOnNavigationBar());
-    }
+        logger.info(String.format("in method: " + method.getName()
+                + repetedLoggerText, cpd.lombok.getUsername(), cpd.lombok.getPassword()));
 
-    @Test
-    public void negative_UserDTOLombok_WrongEmail() {
+        apple.getUserHelper().login(cpd.lombok);
 
-        UserDTOLombok userDTOLombok = UserDTOLombok.builder()
-                .email("winnergmail.com")
-                .password(apple.getUserHelperToApply().password)
-                .build();
+        isFlagAlert = true;
 
-        apple.getUserHelperToApply().login(userDTOLombok);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
-    }
-
-    @Test
-    public void negative_UserDTOLombok_EmptyEmail() {
-
-        UserDTOLombok userDTOLombok = UserDTOLombok.builder()
-                .email("")
-                .password(apple.getUserHelperToApply().password)
-                .build();
-
-        apple.getUserHelperToApply().login(userDTOLombok);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
-    }
-
-    @Test
-    public void negative_UserDTOLombok_WrongPassword() throws IOException {
-
-        UserDTOLombok userDTOLombok = UserDTOLombok.builder()
-                .email(random.readRandomEmailFromFile())
-                .password("Test")
-                .build();
-
-        apple.getUserHelperToApply().login(userDTOLombok);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
-    }
-
-    @Test
-    public void negative_UserDTOLombok_EmptyPassword() throws IOException {
-
-        UserDTOLombok userDTOLombok = UserDTOLombok.builder()
-                .email(random.readRandomEmailFromFile())
-                .password("")
-                .build();
-
-        apple.getUserHelperToApply().login(userDTOLombok);
-        Assert.assertEquals(apple.getUserHelperToApply().alert(seconds),
-                apple.getUserHelperToApply().alertTextLogin_WrongEmailToValidate);
+        Assert.assertTrue(apple.getUserHelper().validationOfAlertTextLogin());
     }
 }
