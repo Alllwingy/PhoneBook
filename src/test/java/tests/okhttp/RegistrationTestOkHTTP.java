@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import datasetup.Data;
 import datasetup.dto.AuthenticationResponseDTO;
 import datasetup.dto.ErrorDTO;
-import datasetup.dto.ErrorDTO_Bug;
 import datasetup.dto.UserDTOLombok;
 import okhttp3.*;
 import org.testng.Assert;
@@ -104,10 +103,10 @@ public class RegistrationTestOkHTTP {
                 throw new RuntimeException(e);
             }
 
-            ErrorDTO_Bug errorDTO_Bug = gson.fromJson(responseJson, ErrorDTO_Bug.class);
+            ErrorDTO errorDTO = gson.fromJson(responseJson, ErrorDTO.class);
 
-            System.out.println("string error: " + errorDTO_Bug.getError());
-            System.out.println("int status: " + errorDTO_Bug.getStatus());
+            System.out.println("string error: " + errorDTO.getError());
+            System.out.println("int status: " + errorDTO.getStatus());
             System.out.println(response.code());
             System.out.println(response.message());
 

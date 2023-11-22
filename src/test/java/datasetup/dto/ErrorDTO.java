@@ -15,6 +15,6 @@ public class ErrorDTO {
     String timestamp;
     int status;
     String error;
-    String message;
+    Object message;
     String path;
 }
