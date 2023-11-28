@@ -23,6 +23,7 @@ public class DeleteAllContactsTests extends BaseRestAssured {
     @Test
     public void deleteAllContacts_contactsDoNotExist() {
 
+        contactsService.getStatusCodeResponseDeleteAllContacts(token);
         softAssert.assertEquals(contactsService.getStatusCodeResponseDeleteAllContacts(token), 200);
 
         System.out.println(contactsService.getMessageResponseDeleteAllContactsPositive(token));

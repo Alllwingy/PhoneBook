@@ -3,6 +3,7 @@ package api;
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import datasetup.dto.AllContactsDTO;
 import datasetup.dto.ContactDTO;
 import datasetup.dto.MessageResponseDTO;
 
@@ -12,6 +13,9 @@ public class ContactsService extends BaseApi {
     Response responseDeleteOneContact = null;
     Response responseDeleteAllContacts = null;
     Response responseUpdateContact = null;
+    Response responseGetAllContacts = null;
+    UserLoginApi userLoginApi = new UserLoginApi();
+
 
     //-------------------------------------------------------------------------------------- responseAddNewContact
 
@@ -50,7 +54,7 @@ public class ContactsService extends BaseApi {
 
     public String getIdResponseAddNewContact(ContactDTO contactDTO, String token) {
 
-        return getMessagePositiveResponseAddNewContact(contactDTO, token).split(":")[1].trim();
+        return getMessagePositiveResponseAddNewContact(contactDTO, token).split(": ")[1];
     }
 
     //-----------------------------------------------------------------------------------------------------------------
@@ -158,5 +162,39 @@ public class ContactsService extends BaseApi {
             responseUpdateContact = getResponseUpdateContact(contactDTO, token);
 
         return responseUpdateContact.body().as(MessageResponseDTO.class).getMessage();
+    }
+
+    //--------------------------------------------------------------------------
+
+    //----------------------------------------- responseGetAllContacts
+
+    private Response getResponseGetAllContacts(String token) {
+
+        return responseGetAllContacts = RestAssured.given().header("Authorization", token).when().get(baseUrl + "/v1/contacts");
+    }
+
+    public void setResponseGetAllContacts(String token) {
+
+        responseGetAllContacts = getResponseGetAllContacts(token);
+    }
+
+    public int getStatusCodeResponseGetAllContacts(String token) {
+
+        if (responseGetAllContacts == null)
+            responseGetAllContacts = getResponseGetAllContacts(token);
+
+        return responseGetAllContacts.getStatusCode();
+    }
+
+    public boolean isIdInTheAllContactResponse(String token, String id) {
+
+        if (responseGetAllContacts == null)
+            responseGetAllContacts = getResponseGetAllContacts(token);
+
+        for (ContactDTO c : responseGetAllContacts.getBody().as(AllContactsDTO.class).getContacts())
+            if (c.getId().equals(id))
+                return true;
+
+        return false;
     }
 }

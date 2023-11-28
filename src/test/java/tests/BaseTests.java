@@ -1,5 +1,9 @@
 package tests;
 
+import api.ContactsService;
+import api.UserLoginApi;
+import api.UserRegisterApi;
+import datasetup.Data;
 import manager.AppleManager;
 import manager.TestNGListener;
 import org.slf4j.Logger;
@@ -14,13 +18,18 @@ import java.util.Arrays;
 public class BaseTests {
 
     static AppleManager apple = new AppleManager();
-    SoftAssert softAssert = new SoftAssert();
+    UserLoginApi userLoginApi = new UserLoginApi();
+    UserRegisterApi userRegisterApi = new UserRegisterApi();
+    ContactsService contactsService = new ContactsService();
     Logger logger = LoggerFactory.getLogger(BaseTests.class);
+    SoftAssert softAssert = new SoftAssert();
+    static String token = "";
     boolean isFlagLogin = false, isFlagAlert = false;
 
     @BeforeSuite (alwaysRun = true)
     public void before() {
 
+        token = userLoginApi.getTokenFromLoginResponse(new Data.ConfigurationPropertiesData().lombok);
         apple.setUp();
     }
 
