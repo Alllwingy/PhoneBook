@@ -1,198 +1,67 @@
 package api;
 
 import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.http.ContentType;
 import com.jayway.restassured.response.Response;
+import datasetup.Data;
 import datasetup.dto.AllContactsDTO;
 import datasetup.dto.ContactDTO;
 import datasetup.dto.MessageResponseDTO;
 
 public class ContactsService extends BaseApi {
 
-    Response responseAddNewContact = null;
-    Response responseDeleteOneContact = null;
-    Response responseDeleteAllContacts = null;
-    Response responseUpdateContact = null;
-    Response responseGetAllContacts = null;
-    UserLoginApi userLoginApi = new UserLoginApi();
+    String token = new UserApi().getToken("login", new Data.ConfigurationPropertiesData().lombok);
 
+    public Response request(String method, ContactDTO contact) {
 
-    //-------------------------------------------------------------------------------------- responseAddNewContact
+        switch (method) {
 
-    private Response getResponseAddNewContact(ContactDTO contactDTO, String token) {
+            case "add": return RestAssured.given(requestS).header("Authorization", token).body(contact).when().post("/contacts");
+            case "put": return RestAssured.given(requestS).header("Authorization", token).body(contact).when().put("/contacts");
+        }
 
-        responseAddNewContact = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", token)
-                .body(contactDTO)
-                .when()
-                .post(baseUrl + "/v1/contacts");
-
-        return responseAddNewContact;
+        return null;
     }
 
-    public void setResponseAddNewContactNull() {
+    public Response request(String method) {
 
-        responseAddNewContact = null;
+        switch (method) {
+
+            case "all": return RestAssured.given(requestS).header("Authorization", token).when().delete("/contacts/clear");
+            case "get": return RestAssured.given(requestS).header("Authorization", token).when().get("/contacts");
+        }
+
+        return null;
     }
 
-    public int getStatusCodeResponseAddNewContact(ContactDTO contactDTO, String token) {
+    public Response request(String method, String id) {
 
-        if (responseAddNewContact == null)
-            responseAddNewContact = getResponseAddNewContact(contactDTO, token);
+        switch (method) {
 
-        return responseAddNewContact.getStatusCode();
+            case "del": return RestAssured.given(requestS).header("Authorization", token).when().delete("/contacts/" + id);
+        }
+
+        return null;
     }
 
-    public String getMessagePositiveResponseAddNewContact(ContactDTO contactDTO, String token) {
+    public int getStatusCode(Response response) {
 
-        if (responseAddNewContact == null)
-            responseAddNewContact = getResponseAddNewContact(contactDTO, token);
-
-        return responseAddNewContact.body().as(MessageResponseDTO.class).getMessage();
+        return response.getStatusCode();
     }
 
-    public String getIdResponseAddNewContact(ContactDTO contactDTO, String token) {
+    public String getMessage(Response response) {
 
-        return getMessagePositiveResponseAddNewContact(contactDTO, token).split(": ")[1];
+        return response.body().as(MessageResponseDTO.class).getMessage();
     }
 
-    //-----------------------------------------------------------------------------------------------------------------
+    public String getId(ContactDTO contact) {
 
-    //------------------------------------------------------------- responseDeleteOneContact
-
-    private Response getResponseDeleteOneContact(String token, String id) {
-
-        responseDeleteOneContact = RestAssured.given()
-                .header("Authorization", token)
-                .when()
-                .delete(baseUrl + "/v1/contacts/" + id);
-
-        return responseDeleteOneContact;
+        return request("add", contact).getBody().as(MessageResponseDTO.class).getMessage().split(": ")[1];
     }
 
-    public void setResponseDeleteOneContactNull() {
+    public boolean isIdPresent(Response response, String id) {
 
-        responseDeleteOneContact = null;
-    }
-
-    public int getStatusCodeResponseDeleteOneContact(String token, String id) {
-
-        if (responseDeleteOneContact == null)
-            responseDeleteOneContact = getResponseDeleteOneContact(token, id);
-
-        return responseDeleteOneContact.getStatusCode();
-    }
-
-    public String getMessageDeleteOneContact(String token, String id) {
-
-        if (responseDeleteOneContact == null)
-            responseDeleteOneContact = getResponseDeleteOneContact(token, id);
-
-        return responseDeleteOneContact.getBody().as(MessageResponseDTO.class).getMessage();
-    }
-
-    //-----------------------------------------------------------------------------------------------------------------
-
-    //------------------------------ responseDeleteAllContacts
-
-    private Response getResponseDeleteAllContacts(String token) {
-
-        responseDeleteAllContacts = RestAssured.given()
-                .header("Authorization", token)
-                .when()
-                .delete(baseUrl + "/v1/contacts/clear");
-
-        return responseDeleteAllContacts;
-    }
-
-    public void setResponseDeleteAllContactsNull() {
-
-        responseDeleteAllContacts = null;
-    }
-
-    public int getStatusCodeResponseDeleteAllContacts(String token) {
-
-        if (responseDeleteAllContacts == null)
-            responseDeleteAllContacts = getResponseDeleteAllContacts(token);
-
-        return responseDeleteAllContacts.getStatusCode();
-    }
-
-    public String getMessageResponseDeleteAllContactsPositive(String token) {
-
-        if (responseDeleteAllContacts == null)
-            responseDeleteAllContacts = getResponseDeleteAllContacts(token);
-
-        return responseDeleteAllContacts.getBody().as(MessageResponseDTO.class).getMessage();
-    }
-
-    //--------------------------------------------------------------------------
-
-    //---------------------------- responseUpdateContact
-
-    private Response getResponseUpdateContact(ContactDTO contactDTO, String token) {
-
-        responseUpdateContact = RestAssured.given()
-                .contentType(ContentType.JSON)
-                .header("Authorization", token)
-                .body(contactDTO)
-                .when()
-                .put(baseUrl + "/v1/contacts");
-
-        return responseUpdateContact;
-    }
-
-    public void setResponseUpdateContactNull() {
-
-        responseUpdateContact = null;
-    }
-
-    public int getStatusCodeResponseUpdateContact(ContactDTO contactDTO, String token) {
-
-        if (responseUpdateContact == null)
-            responseUpdateContact = getResponseUpdateContact(contactDTO, token);
-
-        return responseUpdateContact.getStatusCode();
-    }
-
-    public String getMessagePositiveResponseUpdateContact(ContactDTO contactDTO, String token) {
-
-        if (responseUpdateContact == null)
-            responseUpdateContact = getResponseUpdateContact(contactDTO, token);
-
-        return responseUpdateContact.body().as(MessageResponseDTO.class).getMessage();
-    }
-
-    //--------------------------------------------------------------------------
-
-    //----------------------------------------- responseGetAllContacts
-
-    private Response getResponseGetAllContacts(String token) {
-
-        return responseGetAllContacts = RestAssured.given().header("Authorization", token).when().get(baseUrl + "/v1/contacts");
-    }
-
-    public void setResponseGetAllContacts(String token) {
-
-        responseGetAllContacts = getResponseGetAllContacts(token);
-    }
-
-    public int getStatusCodeResponseGetAllContacts(String token) {
-
-        if (responseGetAllContacts == null)
-            responseGetAllContacts = getResponseGetAllContacts(token);
-
-        return responseGetAllContacts.getStatusCode();
-    }
-
-    public boolean isIdInTheAllContactResponse(String token, String id) {
-
-        if (responseGetAllContacts == null)
-            responseGetAllContacts = getResponseGetAllContacts(token);
-
-        for (ContactDTO c : responseGetAllContacts.getBody().as(AllContactsDTO.class).getContacts())
-            if (c.getId().equals(id))
+        for (ContactDTO contact : response.getBody().as(AllContactsDTO.class).getContacts())
+            if (contact.getId().equals(id))
                 return true;
 
         return false;

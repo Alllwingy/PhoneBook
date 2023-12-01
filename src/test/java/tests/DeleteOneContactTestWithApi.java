@@ -41,7 +41,7 @@ public class DeleteOneContactTestWithApi extends BaseTests {
     @Test
     public void deleteCreatedContactPositive() {
 
-        softAssert.assertEquals(contactsService.getStatusCodeResponseAddNewContact(contact, token), 200);
+        softAssert.assertEquals(serve.getStatusCode(serve.request("add", contact)), 200);
 //        apple.getContactHelper().addNewContact(contact);
 
         apple.getContactHelper().openContactInfoByPhone(contact.getPhone());

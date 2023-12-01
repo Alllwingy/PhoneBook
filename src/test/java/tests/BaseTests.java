@@ -1,8 +1,7 @@
 package tests;
 
 import api.ContactsService;
-import api.UserLoginApi;
-import api.UserRegisterApi;
+import api.UserApi;
 import datasetup.Data;
 import manager.AppleManager;
 import manager.TestNGListener;
@@ -18,9 +17,8 @@ import java.util.Arrays;
 public class BaseTests {
 
     static AppleManager apple = new AppleManager();
-    UserLoginApi userLoginApi = new UserLoginApi();
-    UserRegisterApi userRegisterApi = new UserRegisterApi();
-    ContactsService contactsService = new ContactsService();
+    UserApi authenticate = new UserApi();
+    ContactsService serve = new ContactsService();
     Logger logger = LoggerFactory.getLogger(BaseTests.class);
     SoftAssert softAssert = new SoftAssert();
     static String token = "";
@@ -29,7 +27,7 @@ public class BaseTests {
     @BeforeSuite (alwaysRun = true)
     public void before() {
 
-        token = userLoginApi.getTokenFromLoginResponse(new Data.ConfigurationPropertiesData().lombok);
+        token = authenticate.getToken("login", new Data.ConfigurationPropertiesData().lombok);
         apple.setUp();
     }
 
